@@ -1,50 +1,39 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, } from 'react-native';
 import React from 'react';
-
-
+import Todo from './components/Todo';
+import Input from './components/Input';
 
 export default class App extends React.Component {
   state = {
-    value: '',
     todoList: [],
-
   }
 
-  addTodoHandler = () => {
-    if(this.state.value.trim() === ""){
-      alert('Scrivi qualcosa!')
+  deleteTodoHandler = (id) => {
+    console.warn(id)
+  }
+
+  addTodoHandler = (value) => {
+    if (value.trim() === "") {
+      alert('Scrivi qualcosa!');
       return;
     }
     this.setState(prevState => {
       return {
-        todoList: prevState.todoList.concat(prevState.value),
+        todoList: [...prevState.todoList, { item: value, id: Math.random().toString() }],
         value: ''
       }
-    })
-    
+    });
   }
 
-  onChangeTextHandler = (text) => {
-    this.setState({value: text})
-  }
-  render () {
-    
-    
 
-  return (
-    <View style={styles.container}>
-        <View style={styles.InputContainer}>
-          <TextInput value={this.state.value} onChangeText={this.onChangeTextHandler} placeholder='Scrivi qualcosa' style={styles.Input}/>
-          <Button title='invio' onPress={this.addTodoHandler}/>
-        </View>
+  render() {
+    return (
+      <View style={styles.container}>
+        <Input addTodoHandler={this.addTodoHandler}/>
         <FlatList
           data={this.state.todoList}
-          renderItem={({ item }) => (
-            <View>
-              <Text style={styles.Todo}>- {item.trim()}</Text>
-            </View>
-          )}
+          renderItem={({ item }) => <Todo deleteTodo={() => this.deleteTodoHandler(item.item.id)} title={item.item} />}
           keyExtractor={(item, index) => index.toString()}
         />
         <StatusBar style="auto" />
@@ -58,30 +47,16 @@ const styles = StyleSheet.create({
     padding: 50,
   },
 
-  Input: {
-    width: '80%',
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 4,
-  },
-
   InputContainer: {
-    flexDirection: 'row', 
-    justifyContent: 'space-around', 
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
 
   Output: {
     marginTop: 20,
-    
+
   },
 
-  Todo: {
-    fontSize:17,
-    borderWidth: 1,
-    padding: 5,
-    borderRadius:5,
-    backgroundColor: 'gray',
-    margin: 10,
-  },
+
 });
