@@ -3,11 +3,12 @@ import { StyleSheet, TouchableOpacity, View, TextInput, Text } from 'react-nativ
 
 const Todo = (props) => {
   return (
+    <View style={styles.Todo}>
     <TouchableOpacity onPress={props.deleteTodo}>
-      <View style={styles.Todo}>
+        <Text style={styles.x}>X</Text>
+    </TouchableOpacity>
         <Text style={styles.TodoText}>- {props.title}</Text>
       </View>
-    </TouchableOpacity>
   );
 };
 
@@ -18,9 +19,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: 'gray',
     margin: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
+  x: {
+    backgroundColor: 'red',
+    color: 'white',
+    borderWidth: 1,
+    padding: 5,
+    borderRadius: 100,
+  },
+
   TodoText: {
     fontSize: 17,
+    marginLeft: 10,
   },
 });
 

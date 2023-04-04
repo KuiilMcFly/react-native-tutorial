@@ -10,7 +10,11 @@ export default class App extends React.Component {
   }
 
   deleteTodoHandler = (id) => {
-    console.warn(id)
+    this.setState(prevState => {
+      return {
+        todoList: prevState.todoList.filter(item => item.id !== id)
+      }
+    });
   }
 
   addTodoHandler = (value) => {
@@ -33,7 +37,7 @@ export default class App extends React.Component {
         <Input addTodoHandler={this.addTodoHandler}/>
         <FlatList
           data={this.state.todoList}
-          renderItem={({ item }) => <Todo deleteTodo={() => this.deleteTodoHandler(item.item.id)} title={item.item} />}
+          renderItem={({ item }) => <Todo deleteTodo={() => this.deleteTodoHandler(item.id)} title={item.item} />}
           keyExtractor={(item, index) => index.toString()}
         />
         <StatusBar style="auto" />
